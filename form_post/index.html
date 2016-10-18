@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Formulaire : POST</title>
+</head>
+<body>
+
+
+<form action="traitement.php" method="post">
+
+    <label for="chpNom">
+        Nom
+    </label>
+    <input id="chpNom" type="text" name="nom"/>
+
+
+    <label for="chpPrenom">
+        Prenom
+        <input id="chpPrenom" type="text" name="prenom"/>
+    </label>
+
+    <div>
+    Ville
+    <label for="chpVille0">
+        Paris
+        <input id="chpVille0" type="radio" name="ville" value="75000"/>
+    </label>
+
+    <label for="chpVille1">
+        Lyon
+        <input id="chpVille1" type="radio" name="ville" value="69000"/>
+    </label>
+
+    <label for="chpVille2">
+        Marseille
+        <input id="chpVille2" type="radio" name="ville" value="13000"/>
+    </label>
+    </div>
+    <label for="chxMajeur">
+        Majeur
+        <input id="chxMajeur" type="checkbox" name="majeur"/>
+    </label>
+
+    <div>
+        <button type="submit">Valider</button>
+    </div>
+</form>
+
+</body>
+</html>
