@@ -6,7 +6,16 @@ session_start();
 // en "vrai" on récupérera ces données dans une base de données
 define('USER_MAIL', "toto@gmail.com");
 define('USER_PASS', "azerty");
-define('USER_NAME', "Dupont");
+define('USER_LASTNAME', "Dupont");
+define('USER_FIRSTNAME', "Toto");
+
+function go($path){
+    header('location:'.$path);
+}
+
+function backToLogin($urlData){
+    go("login.php".$urlData);
+}
 
 // vérification : est ce que le mot de passe et le login
 if (isset($_POST["login"]) && isset($_POST["password"])) {
@@ -27,12 +36,17 @@ if (isset($_POST["login"]) && isset($_POST["password"])) {
             "mail" => USER_MAIL
         ];
 
-        $loginFailed = false;
+        // on enregistre les infos utilisateurs dans les infos de SESSION
+        $_SESSION['user'] = $user;
+
+        go('home.php');
+
     } else {
         // sinon si le login/pass ne correspondent pas on crée une variable pour indiquer
-        $loginFailed = true;
-        $errorMessage = '<div class="alert alert-danger">Erreur d\'identification</div>';
+        backToLogin("?authenticationFailed=1&withLogin=".$login );
     }
-}
+} else
+    backToLogin("");
+
 ?>
 

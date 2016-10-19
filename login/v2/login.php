@@ -1,42 +1,42 @@
 <?php
 
+// inclusion d'un fichier contenant des constantes de messages d'erreurs
+include_once 'const/errors.php';
+
+function errorView($msg)
+{
+    return '<div class="alert alert-danger">' . $msg . '</div>';
+}
+
+// initialisation des variables utilisées dans la page
+$errorMessage = '';
+$loginFieldValue = '';
+
+// si un erreur d'identification est signalée via l'url ( $_GET['authenticationFailed'] )
+if (isset($_GET['authenticationFailed']) && $_GET['authenticationFailed'] == 1) {
+    $errorMessage = ERROR_AUTH_FAILED;
+
+    if (isset($_GET['withLogin']))
+        $loginFieldValue = 'value="' . $_GET['withLogin'] . '" ';
+}
+
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Identification</title>
-
-    <!-- BOOTSTRAP & JQuery-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-            crossorigin="anonymous"></script>
-
-    <style>
-        #login-form {
-            margin: 40px auto;
-            width: 360px;
-        }
-
-        form {
-            margin: 10px;
-        }
-
-        .fields {
-            padding: 16px;
-        }
-    </style>
+    <title>Mon appli, identification</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <?php include_once "fragments/styles.html"; ?>
 </head>
 <body>
 
-
 <?php
+
+include_once "fragments/header.php";
+
 if (!isset($user)) {
     ?>
     <div id="login-form" class="panel panel-default">
@@ -47,26 +47,34 @@ if (!isset($user)) {
         <div class="fields">
 
             <!-- si le login a échoué : afficher le message d'erreur -->
-            <?php if (isset($loginFailed)) echo $errorMessage; ?>
+            <?php echo $errorMessage != '' ? errorView($errorMessage) : ''; ?>
 
-            <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
+            <form id="loginForm" action="verification.php" method="post">
                 <div>
 
-                    <label for="chpLogin">
-                        Identifiant
-                        <input id="chpLogin" type="text" name="login" <?php if($loginFailed) echo 'value="'.$login.'"'; ?>/>
-                    </label>
-                </div>
-                <div>
+                    <div class="input-group">
+                        <!--<span class="input-group-addon" id="basic-addon1">@</span>-->
+                        <span class="input-group-addon" id="basic-addon1">
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        </span>
+                        <input id="chpLogin" type="text" name="login" class="form-control"
+                               placeholder="Votre identifiant" <?php echo $loginFieldValue; ?>/>
+                    </div>
 
-                    <label for="chpPassword">
-                        Mot de passe
-                        <input id="chpPassword" type="password" name="password"/>
-                    </label>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">
+                            <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
+                        </span>
+                        <input id="chpPassword" type="password" name="password" class="form-control"
+                               placeholder="Votre mot de passe" <?php echo $loginFieldValue; ?>/>
+                    </div>
+
                 </div>
 
-                <button type="submit">Entrer</button>
             </form>
+        </div>
+        <div class="panel-footer">
+            <button type="submit" class="btn btn-info" form="loginForm">Entrer</button>
         </div>
     </div>
     <?php
