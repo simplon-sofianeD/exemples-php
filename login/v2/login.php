@@ -3,6 +3,8 @@
 // inclusion d'un fichier contenant des constantes de messages d'erreurs
 include_once 'const/errors.php';
 
+
+// TODO : sortir la fonction dans un fichier fonctions.php
 function errorView($msg)
 {
     return '<div class="alert alert-danger">' . $msg . '</div>';

@@ -9,6 +9,7 @@ define('USER_PASS', "azerty");
 define('USER_LASTNAME', "Dupont");
 define('USER_FIRSTNAME', "Toto");
 
+// TODO extraire vers fichier fonctions.php
 function go($path){
     header('location:'.$path);
 }
@@ -43,6 +44,7 @@ if (isset($_POST["login"]) && isset($_POST["password"])) {
 
     } else {
         // sinon si le login/pass ne correspondent pas on crée une variable pour indiquer
+        // header('location:login.php?authenticationFailed=1&withLogin=".$login )
         backToLogin("?authenticationFailed=1&withLogin=".$login );
     }
 } else

@@ -1,9 +1,9 @@
 <?php
     session_start();
 
-if( isset($_SESSION['user'])){
+if( isset($_SESSION['user']) && $_SESSION['user'] != ''){
     $user = $_SESSION['user'];
-    $welcomeMessage = "Bienvenue ".$user['nom']." ".$user['prenom'];
+    $welcomeMessage = "Bienvenue ".$user['prenom']." ".$user['nom'];
 
 } else
     header("location:login.php");
