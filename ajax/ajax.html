@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+    <script type="text/javascript">
+        var requete;
+
+
+        function traiteArticles() {
+            console.log("resultat", this.responseText);
+            var data = JSON.parse(this.responseText);
+            console.log('nombre articles', data.length);
+
+            // affichage html des articles
+            console.log('article[0]', data[0].title);
+
+        }
+
+        function traiteResultat() {
+            console.log("resultat", this.responseText);
+            //var data = JSON.parse(this.responseText);
+            //console.log('Nom 0', data.participants[0].nom);
+        }
+
+        function afficheProgression(event) {
+            console.log('afficheProgression', event);
+            //var pourcentage = (event.position / event.totalSize) * 100;
+            //document.getElementById('progress-bar-progress').width = pourcentage.toString() + "%";
+        }
+
+        /* CHARGEMENT ARTICLES*/
+
+        function loadSalutation() {
+            requete = new XMLHttpRequest();
+            requete.onprogress = afficheProgression;
+            requete.onload = traiteResultat;
+            requete.onerror = function () {
+                console.log("Erreur : ");
+            };
+            requete.open('get', 'http://localhost/simplyon2/tmp/test.php?nom=Erick', true);
+            requete.send();
+        }
+
+        function loadArticles() {
+            requete = new XMLHttpRequest();
+            requete.onload = traiteArticles;
+            requete.onerror = function (event) {
+                console.log("Erreur : ", event);
+            };
+            requete.open('get', 'api_blog.php', true);
+            requete.send();
+        }
+
+    </script>
+
+</head>
+<body>
+
+<p><button onclick="loadSalutation()">Hello</button></p>
+
+<p><button onclick="loadArticles()">charger</button></p>
+
+
+</body>
+</html>
