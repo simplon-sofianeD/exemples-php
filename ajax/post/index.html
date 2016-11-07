@@ -31,23 +31,17 @@
 
         /* CHARGEMENT ARTICLES*/
 
-        function loadArticle1() {
+        function loadArticle(event) {
+            event.preventDefault();
             requete = new XMLHttpRequest();
-            requete.onload = function(){
-                afficheResultat()
-            };
+            requete.onload = onResult.bind(this);
             requete.onerror = function (event) {
                 console.log("Erreur : ", event);
             };
-            requete.open('get', 'api_blog.php', true);
+            var apiUrl = 'api_blog.php?articleId=' + event.target.articleId.value;
+            console.log('apiUrl',apiUrl);
+            requete.open('get', apiUrl, true);
             requete.send();
-        }
-
-        function afficheResultat() {
-            console.log("resultat", this.responseText);
-            var p = document.createElement('p');
-            p.appendChild(document.createTextNode(this.responseText));
-            document.body.appendChild(p)
         }
 
 
@@ -55,7 +49,7 @@
         function loadSalutationGet() {
             requete = new XMLHttpRequest();
             requete.onprogress = afficheProgression;
-            requete.onload = afficheResultat;
+            requete.onload = onResult.bind(this);
             requete.onerror = onError;
             requete.open('get', 'salute.php?nom=Erick', true);
             requete.send();
@@ -66,7 +60,7 @@
             e.preventDefault();
             requete = new XMLHttpRequest();
             requete.onprogress = afficheProgression;
-            requete.onload = afficheResultat;
+            requete.onload = onResult.bind(this);
             requete.onerror = onError;
             requete.open('post', 'salute.php', true);
 
@@ -84,12 +78,24 @@
             e.preventDefault();
             requete = new XMLHttpRequest();
             requete.onprogress = afficheProgression;
-            requete.onload = afficheResultat;
+            requete.onload = onResult.bind(this);
             requete.onerror = onError;
             requete.open('post', 'salute.php', true);
 
             var formData = new FormData(document.getElementById('salute_form2'));
             requete.send(formData);
+        }
+
+        function onResult(event) {
+            var res = event.target.responseText;
+            console.log("resultat", res);
+            affiche(res);
+        }
+
+        function affiche(txt) {
+            var p = document.createElement('p');
+            p.appendChild(document.createTextNode(txt));
+            document.body.appendChild(p)
         }
 
         function onError() {
@@ -107,7 +113,13 @@
 
 <p>
     <button onclick="loadArticles()">charger articles</button>
-    <button onclick="loadArticle1()">charger article 1</button>
+</p>
+<p>
+<form onsubmit="loadArticle(event)">
+    <input type="text" name="articleId"/>
+    <button >charger article </button>
+</form>
+
 </p>
 
 <p>

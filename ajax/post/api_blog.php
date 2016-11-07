@@ -15,6 +15,9 @@ $articles=[
   ],
 ];
 
-echo json_encode($articles);
+if( isset($_GET['articleId']))
+    echo json_encode($articles[$_GET['articleId']]);
+else
+    echo json_encode($articles);
 
 ?>
