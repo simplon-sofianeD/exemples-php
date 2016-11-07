@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+    <script type="text/javascript">
+        var requete;
+
+
+        /* CHARGEMENT ARTICLES*/
+
+        function loadArticles() {
+            requete = new XMLHttpRequest();
+            requete.onload = traiteArticles;
+            requete.onerror = function (event) {
+                console.log("Erreur : ", event);
+            };
+            requete.open('get', 'api_blog.php', true);
+            requete.send();
+        }
+
+        function traiteArticles() {
+            console.log("resultat", this.responseText);
+            var data = JSON.parse(this.responseText);
+            console.log('nombre articles', data.length);
+
+            // affichage html des articles
+            console.log('article[0]', data[0].title);
+
+        }
+
+        /* CHARGEMENT ARTICLES*/
+
+        function loadArticle1() {
+            requete = new XMLHttpRequest();
+            requete.onload = function(){
+                afficheResultat()
+            };
+            requete.onerror = function (event) {
+                console.log("Erreur : ", event);
+            };
+            requete.open('get', 'api_blog.php', true);
+            requete.send();
+        }
+
+        function afficheResultat() {
+            console.log("resultat", this.responseText);
+            var p = document.createElement('p');
+            p.appendChild(document.createTextNode(this.responseText));
+            document.body.appendChild(p)
+        }
+
+
+        /* CHARGEMENT SALUTATION - GET */
+        function loadSalutationGet() {
+            requete = new XMLHttpRequest();
+            requete.onprogress = afficheProgression;
+            requete.onload = afficheResultat;
+            requete.onerror = onError;
+            requete.open('get', 'salute_get.php?nom=Erick', true);
+            requete.send();
+        }
+
+        /* CHARGEMENT SALUTATION - POST */
+        function loadSalutationPost(e) {
+            e.preventDefault();
+            requete = new XMLHttpRequest();
+            requete.onprogress = afficheProgression;
+            requete.onload = afficheResultat;
+            requete.onerror = onError;
+            requete.open('post', 'salute.php', true);
+
+            // on indique le protocole que l'on souhaite utiliser
+            requete.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+
+            var form = document.getElementById('salute_form');
+
+            requete.send("prenom=" + form.prenom.value + "&nom=" + form.nom.value);
+        }
+
+        /* CHARGEMENT SALUTATION - POST - FORM DATA*/
+
+        function loadSalutationPost2(e) {
+            e.preventDefault();
+            requete = new XMLHttpRequest();
+            requete.onprogress = afficheProgression;
+            requete.onload = afficheResultat;
+            requete.onerror = onError;
+            requete.open('post', 'salute.php', true);
+
+            var formData = new FormData(document.getElementById('salute_form2'));
+            requete.send(formData);
+        }
+
+        function onError() {
+            console.log("Erreur : ");
+        }
+
+        function afficheProgression(event) {
+            console.log('afficheProgression', event);
+        }
+    </script>
+
+</head>
+<body>
+
+
+<p>
+    <button onclick="loadArticles()">charger articles</button>
+    <button onclick="loadArticle1()">charger article 1</button>
+</p>
+
+<p>
+    <button onclick="loadSalutationGet()">Hello - GET</button>
+</p>
+
+<p>
+<form id="salute_form" action="salute.php" method="post" onsubmit="loadSalutationPost(event)">
+    <input type="text" name="prenom"/>
+    <input type="text" name="nom"/>
+    <button>Hello - POST</button>
+</form>
+</p>
+<p>
+<form id="salute_form2" action="salute.php" method="post" onsubmit="loadSalutationPost2(event)">
+    <input type="text" name="prenom"/>
+    <input type="text" name="nom"/>
+    <button>Hello - POST - formdata</button>
+</form>
+</p>
+
+</body>
+</html>
